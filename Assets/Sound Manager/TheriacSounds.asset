@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc2b43f890426e5449cf278082d012c9, type: 3}
+  m_Name: TheriacSounds
+  m_EditorClassIdentifier: Assembly-CSharp::SmallHedge.SoundManager.SoundsSO
+  sounds:
+  - name: BGM
+    volume: 1
+    mixer: {fileID: 24300002, guid: b51a8dc5c4e9a8b44842c3ddfd52fac7, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: f73b52f5dc55ba4499004e235dd43dbd, type: 3}
+    - {fileID: 8300000, guid: 5fdde312aa5256c48bca3494cce033de, type: 3}
+    - {fileID: 8300000, guid: 1e9e16aa6275afe469cda644e77faf86, type: 3}
+    - {fileID: 8300000, guid: a234df8039f5aa341ae581786102d0de, type: 3}
+  - name: Bush
+    volume: 1
+    mixer: {fileID: 24300002, guid: b51a8dc5c4e9a8b44842c3ddfd52fac7, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: 6ab3c834ebfb88c40848f0a2324ab523, type: 3}
+    - {fileID: 8300000, guid: d16dc795c337fc84faaac977205249eb, type: 3}
+    - {fileID: 8300000, guid: e54b8c0282ea25349a24efe404529a9b, type: 3}
+  - name: Enemy
+    volume: 1
+    mixer: {fileID: 24300002, guid: b51a8dc5c4e9a8b44842c3ddfd52fac7, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: c8f7b56b66879c94396f2d97db324d1d, type: 3}
+    - {fileID: 8300000, guid: 2a569c7601a530242834b41403ea1753, type: 3}
+    - {fileID: 8300000, guid: 1a0299f86d922c44db16190055e65f59, type: 3}
+  - name: Gasp
+    volume: 1
+    mixer: {fileID: 24300002, guid: b51a8dc5c4e9a8b44842c3ddfd52fac7, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: 78a8cce9c06ff3e459ef4ddf24d70e2c, type: 3}
+    - {fileID: 8300000, guid: 6cd9742e8f498a64584473ca1680fa54, type: 3}
+    - {fileID: 8300000, guid: 0368e707f232fee49854daf3a030cb14, type: 3}
+  - name: UI
+    volume: 1
+    mixer: {fileID: 24300002, guid: b51a8dc5c4e9a8b44842c3ddfd52fac7, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: a4a4a10f27f543b4e956907b272e5bda, type: 3}
+    - {fileID: 8300000, guid: 724913d770d0a504f8b1d0e2733aa4f5, type: 3}
+    - {fileID: 8300000, guid: 740b8a677e3a83a43b4ec2418964b437, type: 3}
+    - {fileID: 8300000, guid: f97357c7942024f4d86e3fb724e09244, type: 3}
+    - {fileID: 8300000, guid: 24579276c05c8864fb1f1b10952d00b2, type: 3}
+    - {fileID: 8300000, guid: 58802af62af6913428231bf6af0b8533, type: 3}
+  - name: Heartbeat
+    volume: 1
+    mixer: {fileID: 24300002, guid: b51a8dc5c4e9a8b44842c3ddfd52fac7, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: c4a0f18c14dbc834a96845006a9ce4aa, type: 3}
+  - name: Walking
+    volume: 1
+    mixer: {fileID: 24300002, guid: b51a8dc5c4e9a8b44842c3ddfd52fac7, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: 11eeade91d120b94f9c5fe2db12f6734, type: 3}
