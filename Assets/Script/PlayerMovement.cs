@@ -17,12 +17,14 @@ public class PlayerMovement : MonoBehaviour
     private PlayerSystem PlayerSystem;
     private Animator PlayerAnimator;
     private SpriteRenderer PlayerRenderer;
+    private ParticleSystem maskVFX;
 
     private void Awake()
     {
         PlayerSystem = GetComponent<PlayerSystem>();
         PlayerAnimator = GetComponentInChildren<Animator>();
         PlayerRenderer = GetComponentInChildren<SpriteRenderer>();
+        maskVFX = GetComponentInChildren<ParticleSystem>();
         action = new InputSystem_Actions();
         rb = GetComponent<Rigidbody>();
     }
@@ -53,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
     private void Mask_performed(InputAction.CallbackContext obj)
     {
         PlayerSystem.playerIsMasked = !PlayerSystem.playerIsMasked;
-
+        maskVFX.Play();
         PlayerAnimator.SetBool("IsMasked", (PlayerSystem.playerIsMasked));
     }
     private void Sprint_performed(InputAction.CallbackContext obj)
