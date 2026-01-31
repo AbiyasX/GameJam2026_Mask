@@ -15,9 +15,14 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
 
     private PlayerSystem PlayerSystem;
+    private Animator PlayerAnimator;
+    private SpriteRenderer PlayerRenderer;
+
     private void Awake()
     {
         PlayerSystem = GetComponent<PlayerSystem>();
+        PlayerAnimator = GetComponentInChildren<Animator>();
+        PlayerRenderer = GetComponentInChildren<SpriteRenderer>();
         action = new InputSystem_Actions();
         rb = GetComponent<Rigidbody>();
     }
@@ -35,8 +40,6 @@ public class PlayerMovement : MonoBehaviour
         action.Player.Sprint.canceled += Sprint_canceled;
     }
 
-    
-
     private void OnDisable()
     {
         action.Player.Move.performed -= Move_performed;
@@ -50,6 +53,8 @@ public class PlayerMovement : MonoBehaviour
     private void Mask_performed(InputAction.CallbackContext obj)
     {
         PlayerSystem.playerIsMasked = !PlayerSystem.playerIsMasked;
+
+        PlayerAnimator.SetBool("IsMasked", (PlayerSystem.playerIsMasked));
     }
     private void Sprint_performed(InputAction.CallbackContext obj)
     {
@@ -63,11 +68,25 @@ public class PlayerMovement : MonoBehaviour
     private void Move_performed(InputAction.CallbackContext obj)
     {
         move = obj.ReadValue<Vector2>();
+        if(move.x == 1)
+        {
+            PlayerRenderer.flipX = false;
+        }
+        else if(move.x == -1)
+        {
+            PlayerRenderer.flipX = true;
+        }
+        else
+        {
+            return;
+        }
     }
 
     private void Update()
     {
         playerSpeed = PlayerSystem.Sprint() ? runSpeed : walkSpeed;
         rb.linearVelocity = new Vector3(move.x, 0f, move.y) * playerSpeed;
+
+        PlayerAnimator.SetFloat("PlayerSpeed", Mathf.Abs(move.magnitude));
     }
 }

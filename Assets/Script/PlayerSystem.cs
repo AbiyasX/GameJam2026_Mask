@@ -54,6 +54,7 @@ public class PlayerSystem : MonoBehaviour
     }
     public void RegenerateStamina()
     {
+        if (isSprinting) return;
         stamina += staminaRegenRate * Time.deltaTime;
         stamina = Mathf.Clamp(stamina, 0f, maxStamina);
     }
