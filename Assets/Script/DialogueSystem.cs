@@ -1,56 +1,39 @@
 using TMPro;
 using UnityEngine;
-using static UnityEditor.Rendering.MaterialUpgrader;
 
 public class DialogueSystem : MonoBehaviour
 {
-    [Header("UI")]
-    public GameObject dialoguePanel;
+    public GameObject panel;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI dialogueText;
 
-    private DialogTextData currentDialog;
-    private int currentIndex;
-    public bool isActive;
-
-    public void StartDialogue(DialogTextData dialog)
+    private DialogTextData dialog;
+    private int index;
+    public void StartDialogue(DialogTextData data)
     {
-        currentDialog = dialog;
-        currentIndex = 0;
-        isActive = true;
+        dialog = data;
+        index = 0;
 
-        dialoguePanel.SetActive(true);
-        ShowLine();
+        Show();
     }
-
-    void ShowLine()
+    public void Next()
     {
-        if (currentIndex >= currentDialog.lines.Length)
+        index+= 1;
+
+        Debug.Log("next");
+        
+        if (index >= dialog.lines.Length)
         {
-            EndDialogue();
+            panel.SetActive(false);
             return;
         }
 
-        DialogLine line = currentDialog.lines[currentIndex];
-        nameText.text = line.characterName;
-        dialogueText.text = line.text;
+        Show();
     }
 
-    public void NextLine()
-    {  
-        currentIndex++;
-        ShowLine();
-    }
-
-    void EndDialogue()
+    void Show()
     {
-        isActive = false;
-        dialoguePanel.SetActive(false);
-        currentDialog = null;
-    }
-
-    public bool IsDialogueActive()
-    {
-        return isActive;
+        nameText.text = dialog.lines[index].characterName;
+        dialogueText.text = dialog.lines[index].text;
     }
 }

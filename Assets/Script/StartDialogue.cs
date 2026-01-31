@@ -8,9 +8,6 @@ public class StartDialogue : MonoBehaviour
     private void Start()
     {
         dialog = GetComponent<DialogueSystem>();
-    }
-    private void Update()
-    {
         dialog.StartDialogue(data);
     }
 }
