@@ -15,18 +15,18 @@ public class PickUpSystem : MonoBehaviour
 
     private void Awake()
     {
-        inputActions = new inputActions();
+        inputActions = new InputSystem_Actions();
     }
 
     private void OnEnable()
     {
-        inputActions.Player.Pickup.performed += OnPickupPerformed;
+        inputActions.Player.Interact.performed += OnPickupPerformed;
         inputActions.Player.Enable();
     }
 
     private void OnDisable()
     {
-        inputActions.Player.Pickup.performed -= OnPickupPerformed;
+        inputActions.Player.Interact.performed -= OnPickupPerformed;
         inputActions.Player.Disable();
     }
 
