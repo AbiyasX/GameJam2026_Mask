@@ -20,7 +20,6 @@
   <Project Path="Unity.RenderPipelines.Universal.Editor.csproj" />
   <Project Path="Unity.PerformanceTesting.Editor.csproj" />
   <Project Path="UnityEngine.TestRunner.csproj" />
-  <Project Path="Unity.Splines.csproj" />
   <Project Path="Unity.AppUI.Redux.csproj" />
   <Project Path="Unity.Burst.csproj" />
   <Project Path="Unity.AI.ModelTrainer.csproj" />
@@ -28,6 +27,7 @@
   <Project Path="Unity.AI.Material.csproj" />
   <Project Path="Unity.VisualScripting.Flow.Editor.csproj" />
   <Project Path="Unity.Animation.Rigging.csproj" />
+  <Project Path="Unity.Splines.csproj" />
   <Project Path="Unity.VisualStudio.Editor.csproj" />
   <Project Path="Unity.InputSystem.csproj" />
   <Project Path="Unity.Animation.Rigging.Editor.csproj" />
