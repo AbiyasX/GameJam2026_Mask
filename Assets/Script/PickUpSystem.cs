@@ -5,13 +5,13 @@ public class PickUpSystem : MonoBehaviour
 {
     [Header("Pickup Settings")]
     public float pickupRange = 2f;
-    public float sphereRadius = 0.5f;
     public LayerMask pickupLayer;
 
     [Header("References")]
     public Transform playerTransform;
 
     private InputSystem_Actions inputActions;
+    private GameObject detectedItem = null;
 
     private void Awake()
     {
@@ -30,25 +30,17 @@ public class PickUpSystem : MonoBehaviour
         inputActions.Player.Disable();
     }
 
-    void Update()
+    private void Update()
     {
         DetectItem();
     }
 
-    GameObject detectedItem = null;
-
     void DetectItem()
     {
-        Vector3 forward = playerTransform.forward;
-        forward.y = 0;
-        forward.Normalize();
-
-        Ray ray = new Ray(playerTransform.position + Vector3.up * 0.5f, forward);
-        RaycastHit hit;
-
-        if (Physics.SphereCast(ray, sphereRadius, out hit, pickupRange, pickupLayer))
+        Collider[] hits = Physics.OverlapSphere(playerTransform.position + Vector3.up * 0.5f, pickupRange, pickupLayer);
+        if (hits.Length > 0)
         {
-            detectedItem = hit.collider.gameObject;
+            detectedItem = hits[0].gameObject;
             Debug.Log("Detected Item: " + detectedItem.name);
         }
         else
@@ -57,18 +49,17 @@ public class PickUpSystem : MonoBehaviour
         }
     }
 
-    void OnPickupPerformed(InputAction.CallbackContext context)
+    private void OnPickupPerformed(InputAction.CallbackContext context)
     {
-        if (detectedItem != null)
-        {
-            Pickup(detectedItem);
-        }
+        
+        Pickup(detectedItem);
+        
     }
 
     void Pickup(GameObject item)
-    {
+    {  
         Debug.Log("Picked up: " + item.name);
-        item.SetActive(false);
+        Destroy(item);
     }
 
     private void OnDrawGizmos()
@@ -76,10 +67,13 @@ public class PickUpSystem : MonoBehaviour
         if (playerTransform)
         {
             Gizmos.color = Color.yellow;
-            Vector3 forward = playerTransform.forward;
-            forward.y = 0;
-            forward.Normalize();
-            Gizmos.DrawWireSphere(playerTransform.position + Vector3.up * 0.5f + forward * pickupRange, sphereRadius);
+            Gizmos.DrawWireSphere(playerTransform.position + Vector3.up * 0.5f, pickupRange);
+  
+            if (detectedItem != null)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawSphere(detectedItem.transform.position, 0.2f);
+            }
         }
     }
 }
