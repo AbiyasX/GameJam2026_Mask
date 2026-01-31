@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -7,12 +8,13 @@ public class BushScript : MonoBehaviour
     private Material mat;
     private PlayerCamera cam;
     private float targetVisibility = 1;
+    public float hideTime = 5;
     private void Start()
     {
         mat = GetComponent<Renderer>().material;
         cam = FindAnyObjectByType<PlayerCamera>();
     }
-    
+
     void Update()
     {
         float current = mat.GetFloat("_Float");
@@ -31,7 +33,9 @@ public class BushScript : MonoBehaviour
         {
             SetVisible(false);
             cam.zoomInCamera(true);
-            
+            PlayerSystem ps = other.GetComponent<PlayerSystem>();
+            StartCoroutine(PlayerHiding(ps));
+
         }
     }
 
@@ -41,7 +45,17 @@ public class BushScript : MonoBehaviour
         {
             SetVisible(true);
             cam.zoomInCamera(false);
-
+            other.GetComponent<PlayerSystem>().canPlayerSpotted = false;
         }
     }
+
+    
+
+    IEnumerator PlayerHiding(PlayerSystem ps)
+    {
+        yield return new WaitForSeconds(hideTime);
+        Debug.Log("hidden");
+        ps.canPlayerSpotted = false;
+    }
+
 }

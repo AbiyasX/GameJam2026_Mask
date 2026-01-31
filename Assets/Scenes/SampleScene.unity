@@ -1437,11 +1437,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   stamina: 0
-  staminaDrainRate: 0.5
-  staminaRegenRate: 5
-  sprintDrainRate: 2
+  staminaDrainRate: 10
+  staminaRegenRate: 10
+  sprintDrainRate: 5
   playerIsMasked: 1
   isSprinting: 0
+  canPlayerSpotted: 0
   staminaBar: {fileID: 1322279325}
 --- !u!1 &1762452564
 GameObject:
@@ -1606,7 +1607,7 @@ GameObject:
   - component: {fileID: 2035770587}
   m_Layer: 0
   m_Name: Enemy.AI
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1635,6 +1636,7 @@ MonoBehaviour:
   patrolSpeed: 2
   chaseSpeed: 4
   waypointTolerance: 0.3
+  playerSpotted: 0
 --- !u!195 &2035770582
 NavMeshAgent:
   m_ObjectHideFlags: 0

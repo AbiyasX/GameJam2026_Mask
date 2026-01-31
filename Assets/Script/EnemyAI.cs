@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering.VirtualTexturing;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class EnemyAI : MonoBehaviour
     public float patrolSpeed = 2f;
     public float chaseSpeed = 4f;
     public float waypointTolerance = 0.3f;
+    public bool playerSpotted;
 
     private int patrolIndex;
     private LineRenderer line;
@@ -29,8 +31,8 @@ public class EnemyAI : MonoBehaviour
         line = GetComponent<LineRenderer>();
         agent = GetComponent<NavMeshAgent>();
 
-        if (player == null)
-            player = GameObject.FindWithTag("Player").transform;
+
+        player = GameObject.FindWithTag("Player").transform;
 
         line.loop = true;
         line.positionCount = rayCount + 2;
@@ -40,18 +42,24 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        bool canSee = CanSeePlayer();
-        DrawCone(canSee);
+        var playerSystem = player.GetComponent<PlayerSystem>();
 
-        if (canSee)
+        bool canSee = CanSeePlayer() && playerSystem.canPlayerSpotted;
+        DrawCone(canSee);
+        if (canSee && !playerSystem.playerIsMasked && playerSystem.canPlayerSpotted)
+        {
+            playerSpotted = true;
             currentState = State.Chase;
-        else if (currentState == State.Chase)
+        }
+
+        if (!playerSystem.canPlayerSpotted)
+        {
+            playerSpotted = false;
             currentState = State.Patrol;
+        }
 
         HandleState();
     }
-
-    // ---------------- STATE LOGIC ----------------
 
     void HandleState()
     {
@@ -66,6 +74,7 @@ public class EnemyAI : MonoBehaviour
                 break;
         }
     }
+
 
     void Patrol()
     {
@@ -109,7 +118,7 @@ public class EnemyAI : MonoBehaviour
             line.SetPosition(i + 1, origin + dir * viewDistance);
         }
 
-        line.startColor = line.endColor = canSee ? Color.green : Color.red;
+        line.startColor = line.endColor = Color.red;
     }
 
     bool CanSeePlayer()
@@ -135,4 +144,19 @@ public class EnemyAI : MonoBehaviour
 
         return true;
     }
+
+    void GameOver()
+    {
+        Debug.Log("Game Over!! Playar Got Caught");
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            GameOver();
+        }
+    }
 }
+
+

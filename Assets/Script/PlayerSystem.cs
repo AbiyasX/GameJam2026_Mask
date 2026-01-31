@@ -11,6 +11,7 @@ public class PlayerSystem : MonoBehaviour
 
     public bool playerIsMasked = true;
     public bool isSprinting;
+    public bool canPlayerSpotted = true;
 
     public Slider staminaBar;
 
@@ -27,7 +28,12 @@ public class PlayerSystem : MonoBehaviour
         Sprint();
         if (!playerIsMasked)
         {
+            canPlayerSpotted = true;
             RegenerateStamina();
+        }
+        if(stamina <= 0)
+        {
+            GameOver();
         }
     }
 
@@ -54,7 +60,11 @@ public class PlayerSystem : MonoBehaviour
 
     void staminaBarUpdate()
     {
-
         staminaBar.value = Mathf.Lerp(staminaBar.value, stamina / maxStamina, Time.deltaTime * 8f);
+    }
+
+    void GameOver()
+    {
+        Debug.Log("Game Over! Player Sufficated");
     }
 }

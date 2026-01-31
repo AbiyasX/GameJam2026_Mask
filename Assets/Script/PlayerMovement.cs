@@ -30,7 +30,6 @@ public class PlayerMovement : MonoBehaviour
         action.Player.Move.canceled += Move_performed;
 
         action.Player.Mask.performed += Mask_performed;
-        action.Player.Mask.canceled += Mask_canceled;
 
         action.Player.Sprint.performed += Sprint_performed;
         action.Player.Sprint.canceled += Sprint_canceled;
@@ -45,20 +44,12 @@ public class PlayerMovement : MonoBehaviour
         action.Player.Sprint.performed -= Sprint_performed;
         action.Player.Sprint.canceled -= Sprint_canceled;
 
-        action.Player.Sprint.performed -= Sprint_performed;
-        action.Player.Sprint.canceled -= Sprint_canceled;
-
         action.Disable();
-    }
-
-    private void Mask_canceled(InputAction.CallbackContext obj)
-    {
-        PlayerSystem.playerIsMasked = true;
     }
 
     private void Mask_performed(InputAction.CallbackContext obj)
     {
-        PlayerSystem.playerIsMasked = false;
+        PlayerSystem.playerIsMasked = !PlayerSystem.playerIsMasked;
     }
     private void Sprint_performed(InputAction.CallbackContext obj)
     {
