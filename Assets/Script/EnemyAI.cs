@@ -10,8 +10,19 @@ public class EnemyAI : MonoBehaviour
     public float viewDistance = 10f;
     public int rayCount = 30;
     public float eyeHeight = 0.2f;
+
+    [Header("Patrol Settings")]
+    public Transform[] patrolPoints;
+    public float patrolSpeed = 2f;
+    public float chaseSpeed = 4f;
+    public float waypointTolerance = 0.3f;
+
+    private int patrolIndex;
     private LineRenderer line;
     private NavMeshAgent agent;
+
+    private enum State { Patrol, Chase }
+    private State currentState = State.Patrol;
 
     void Awake()
     {
@@ -23,6 +34,8 @@ public class EnemyAI : MonoBehaviour
 
         line.loop = true;
         line.positionCount = rayCount + 2;
+
+        GoToNextPatrolPoint();
     }
 
     void Update()
@@ -31,8 +44,54 @@ public class EnemyAI : MonoBehaviour
         DrawCone(canSee);
 
         if (canSee)
-            agent.SetDestination(player.position);
+            currentState = State.Chase;
+        else if (currentState == State.Chase)
+            currentState = State.Patrol;
+
+        HandleState();
     }
+
+    // ---------------- STATE LOGIC ----------------
+
+    void HandleState()
+    {
+        switch (currentState)
+        {
+            case State.Patrol:
+                Patrol();
+                break;
+
+            case State.Chase:
+                Chase();
+                break;
+        }
+    }
+
+    void Patrol()
+    {
+        agent.speed = patrolSpeed;
+
+        if (!agent.pathPending && agent.remainingDistance <= waypointTolerance)
+        {
+            GoToNextPatrolPoint();
+        }
+    }
+
+    void Chase()
+    {
+        agent.speed = chaseSpeed;
+        agent.SetDestination(player.position);
+    }
+
+    void GoToNextPatrolPoint()
+    {
+        if (patrolPoints.Length == 0)
+            return;
+
+        agent.SetDestination(patrolPoints[patrolIndex].position);
+        patrolIndex = (patrolIndex + 1) % patrolPoints.Length;
+    }
+
 
     void DrawCone(bool canSee)
     {
@@ -60,6 +119,7 @@ public class EnemyAI : MonoBehaviour
 
         if (distance > viewDistance)
             return false;
+
         Vector3 dir = toPlayer.normalized;
 
         float dot = Vector3.Dot(transform.forward, dir);
@@ -67,7 +127,7 @@ public class EnemyAI : MonoBehaviour
         if (dot < threshold)
             return false;
 
-        if (Physics.Raycast(transform.position + Vector3.up * 1.5f, dir, out RaycastHit hit, viewDistance))
+        if (Physics.Raycast(transform.position + Vector3.up * eyeHeight, dir, out RaycastHit hit, viewDistance))
         {
             if (!hit.transform.CompareTag("Player"))
                 return false;
