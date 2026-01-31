@@ -31,7 +31,7 @@ public class PlayerSystem : MonoBehaviour
             canPlayerSpotted = true;
             RegenerateStamina();
         }
-        if(stamina <= 0)
+        if(stamina <= 0 && playerIsMasked == true)
         {
             GameOver();
         }

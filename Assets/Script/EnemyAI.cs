@@ -26,11 +26,19 @@ public class EnemyAI : MonoBehaviour
     private enum State { Patrol, Chase }
     private State currentState = State.Patrol;
 
+    private Animator EnemyAnimator;
+    private SpriteRenderer EnemyRenderer;
+
+    private Vector3 prevPosition;
+    private float dirFace;
+
     void Awake()
     {
+        EnemyAnimator = GetComponentInChildren<Animator>();
+        EnemyRenderer = GetComponentInChildren<SpriteRenderer>();
+
         line = GetComponent<LineRenderer>();
         agent = GetComponent<NavMeshAgent>();
-
 
         player = GameObject.FindWithTag("Player").transform;
 
@@ -40,9 +48,31 @@ public class EnemyAI : MonoBehaviour
         GoToNextPatrolPoint();
     }
 
+    void Start()
+    {
+        prevPosition = transform.position;
+    }
+
     void Update()
     {
         var playerSystem = player.GetComponent<PlayerSystem>();
+
+        Vector3 deltaPosition = transform.position - prevPosition;
+        dirFace = deltaPosition.x;
+        prevPosition = transform.position;
+
+        if(dirFace < 0)
+        {
+            EnemyRenderer.flipX = false;
+        }
+        else if(dirFace > 0)
+        {
+            EnemyRenderer.flipX = true;
+        }
+        else
+        {
+            return;
+        }
 
         bool canSee = CanSeePlayer() && playerSystem.canPlayerSpotted;
         DrawCone(canSee);
@@ -75,10 +105,12 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-
     void Patrol()
     {
         agent.speed = patrolSpeed;
+
+        EnemyAnimator.SetFloat("AnimationSpeed", 1);
+        EnemyAnimator.SetFloat("EnemySpeed", Mathf.Abs(patrolSpeed));
 
         if (!agent.pathPending && agent.remainingDistance <= waypointTolerance)
         {
@@ -89,6 +121,9 @@ public class EnemyAI : MonoBehaviour
     void Chase()
     {
         agent.speed = chaseSpeed;
+
+        EnemyAnimator.SetFloat("AnimationSpeed", 1.5f);
+
         agent.SetDestination(player.position);
     }
 
@@ -99,26 +134,6 @@ public class EnemyAI : MonoBehaviour
 
         agent.SetDestination(patrolPoints[patrolIndex].position);
         patrolIndex = (patrolIndex + 1) % patrolPoints.Length;
-    }
-
-
-    void DrawCone(bool canSee)
-    {
-        Vector3 origin = transform.position + Vector3.up * eyeHeight;
-        line.SetPosition(0, origin);
-
-        float halfAngle = viewAngle * 0.5f;
-
-        for (int i = 0; i <= rayCount; i++)
-        {
-            float angle = -halfAngle + (viewAngle / rayCount) * i;
-            Quaternion rot = Quaternion.Euler(0, angle, 0);
-            Vector3 dir = rot * transform.forward;
-
-            line.SetPosition(i + 1, origin + dir * viewDistance);
-        }
-
-        line.startColor = line.endColor = Color.red;
     }
 
     bool CanSeePlayer()
@@ -156,6 +171,26 @@ public class EnemyAI : MonoBehaviour
         {
             GameOver();
         }
+    }
+
+    // Gizmos
+    void DrawCone(bool canSee)
+    {
+        Vector3 origin = transform.position + Vector3.up * eyeHeight;
+        line.SetPosition(0, origin);
+
+        float halfAngle = viewAngle * 0.5f;
+
+        for (int i = 0; i <= rayCount; i++)
+        {
+            float angle = -halfAngle + (viewAngle / rayCount) * i;
+            Quaternion rot = Quaternion.Euler(0, angle, 0);
+            Vector3 dir = rot * transform.forward;
+
+            line.SetPosition(i + 1, origin + dir * viewDistance);
+        }
+
+        line.startColor = line.endColor = Color.red;
     }
 }
 

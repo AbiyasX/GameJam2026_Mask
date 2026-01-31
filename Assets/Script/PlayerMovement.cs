@@ -74,11 +74,11 @@ public class PlayerMovement : MonoBehaviour
     private void Move_performed(InputAction.CallbackContext obj)
     {
         move = obj.ReadValue<Vector2>();
-        if(move.x == 1)
+        if(move.x > 0)
         {
             PlayerRenderer.flipX = false;
         }
-        else if(move.x == -1)
+        else if(move.x < 0)
         {
             PlayerRenderer.flipX = true;
         }
