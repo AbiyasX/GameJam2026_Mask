@@ -2113,7 +2113,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.75, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1568646406
 MonoBehaviour:
@@ -2131,7 +2131,7 @@ MonoBehaviour:
   staminaDrainRate: 10
   staminaRegenRate: 10
   sprintDrainRate: 5
-  playerIsMasked: 1
+  playerIsMasked: 0
   isSprinting: 0
   canPlayerSpotted: 0
   staminaBar: {fileID: 1322279325}

@@ -59,11 +59,15 @@ public class PlayerMovement : MonoBehaviour
     private void Sprint_performed(InputAction.CallbackContext obj)
     {
         PlayerSystem.isSprinting = true;
+
+        PlayerAnimator.SetFloat("AnimationSpeed", 2);
     }
 
     private void Sprint_canceled(InputAction.CallbackContext obj)
     {
         PlayerSystem.isSprinting = false;
+
+        PlayerAnimator.SetFloat("AnimationSpeed", 1);
     }
     private void Move_performed(InputAction.CallbackContext obj)
     {
