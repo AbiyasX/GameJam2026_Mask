@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
@@ -13,18 +14,20 @@ public class PlayerCamera : MonoBehaviour
     public float followSpeed = 10f;
     public bool isZoomed = false;
 
-    public static PlayerCamera instance;
+    private CinemachineVolumeSettings volumeSettings;
 
-    private void Awake()
+    private void Start()
     {
-        instance = this;
+        volumeSettings = GetComponent<CinemachineVolumeSettings>();
     }
-
     public void zoomInCamera(bool toggle)
     {
         isZoomed = toggle;
     }
-
+    private void Update()
+    {
+        volumeSettings.Weight = Mathf.Lerp(volumeSettings.Weight, isZoomed ? 1f : 0f, Time.deltaTime * 2);
+    }
     private void LateUpdate()
     {
         if (!player) return;

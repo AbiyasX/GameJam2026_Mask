@@ -41,8 +41,6 @@ public class PlayerSystem : MonoBehaviour
     public bool Sprint()
     {
         if (stamina <= 0f || !isSprinting) return false;
-        Debug.Log("isSprinting");
-
         stamina -= sprintDrainRate * Time.deltaTime;
         stamina = Mathf.Clamp(stamina, 0f, maxStamina);
 

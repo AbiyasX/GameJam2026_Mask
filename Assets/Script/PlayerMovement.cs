@@ -62,13 +62,11 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Sprint_performed(InputAction.CallbackContext obj)
     {
-        Debug.Log("Running");
         PlayerSystem.isSprinting = true;
     }
 
     private void Sprint_canceled(InputAction.CallbackContext obj)
     {
-        Debug.Log("StopedRunning");
         PlayerSystem.isSprinting = false;
     }
     private void Move_performed(InputAction.CallbackContext obj)

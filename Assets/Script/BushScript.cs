@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class BushScript : MonoBehaviour
 {
@@ -29,6 +31,7 @@ public class BushScript : MonoBehaviour
         {
             SetVisible(false);
             cam.zoomInCamera(true);
+            
         }
     }
 

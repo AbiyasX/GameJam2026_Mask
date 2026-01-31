@@ -3,65 +3,76 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
-    [Header("References")]
     public Transform player;
-    public NavMeshAgent agent;
 
-    [Header("Vision")]
-    public float viewDistance = 10f;
+    [Header("Vision Settings")]
     public float viewAngle = 60f;
-    public LayerMask obstacleMask;
-    public LayerMask playerMask;
+    public float viewDistance = 10f;
+    public int rayCount = 30;
+    public float eyeHeight = 0.2f;
+    private LineRenderer line;
+    private NavMeshAgent agent;
 
-    private bool canSeePlayer;
+    void Awake()
+    {
+        line = GetComponent<LineRenderer>();
+        agent = GetComponent<NavMeshAgent>();
+
+        if (player == null)
+            player = GameObject.FindWithTag("Player").transform;
+
+        line.loop = true;
+        line.positionCount = rayCount + 2;
+    }
 
     void Update()
     {
-        DetectPlayer();
+        bool canSee = CanSeePlayer();
+        DrawCone(canSee);
 
-        if (canSeePlayer)
-        {
+        if (canSee)
             agent.SetDestination(player.position);
-        }
-        else
-        {
-            agent.ResetPath();
-        }
     }
 
-    void DetectPlayer()
+    void DrawCone(bool canSee)
     {
-        canSeePlayer = false;
+        Vector3 origin = transform.position + Vector3.up * eyeHeight;
+        line.SetPosition(0, origin);
 
-        Vector3 dirToPlayer = (player.position - transform.position).normalized;
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        float halfAngle = viewAngle * 0.5f;
 
-        if (distanceToPlayer > viewDistance) return;
-   
-        if (Vector3.Angle(transform.forward, dirToPlayer) > viewAngle * 0.5f)
-            return;
-
-        if (Physics.Raycast(
-            transform.position + Vector3.up * 1.5f,
-            dirToPlayer,
-            out RaycastHit hit,
-            viewDistance,
-            obstacleMask | playerMask))
+        for (int i = 0; i <= rayCount; i++)
         {
-            if (((1 << hit.collider.gameObject.layer) & playerMask) != 0)
-            {
-                canSeePlayer = true;
-            }
+            float angle = -halfAngle + (viewAngle / rayCount) * i;
+            Quaternion rot = Quaternion.Euler(0, angle, 0);
+            Vector3 dir = rot * transform.forward;
+
+            line.SetPosition(i + 1, origin + dir * viewDistance);
         }
+
+        line.startColor = line.endColor = canSee ? Color.green : Color.red;
     }
 
-    void OnDrawGizmosSelected()
+    bool CanSeePlayer()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, viewDistance);
+        Vector3 toPlayer = player.position - transform.position;
+        float distance = toPlayer.magnitude;
 
-        Gizmos.color = canSeePlayer ? Color.red : Color.green;
-        Gizmos.DrawLine(transform.position + Vector3.up * 1.5f, player.position);
+        if (distance > viewDistance)
+            return false;
+        Vector3 dir = toPlayer.normalized;
+
+        float dot = Vector3.Dot(transform.forward, dir);
+        float threshold = Mathf.Cos(viewAngle * 0.5f * Mathf.Deg2Rad);
+        if (dot < threshold)
+            return false;
+
+        if (Physics.Raycast(transform.position + Vector3.up * 1.5f, dir, out RaycastHit hit, viewDistance))
+        {
+            if (!hit.transform.CompareTag("Player"))
+                return false;
+        }
+
+        return true;
     }
-
 }
