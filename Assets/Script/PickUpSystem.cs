@@ -4,11 +4,13 @@ using UnityEngine.InputSystem;
 public class PickUpSystem : MonoBehaviour
 {
     [Header("Pickup Settings")]
+    public int itemID;
     public float pickupRange = 2f;
     public LayerMask pickupLayer;
 
     [Header("References")]
     public Transform playerTransform;
+    [SerializeField] ItemManager itemManager;
 
     private InputSystem_Actions inputActions;
     private GameObject detectedItem = null;
@@ -58,7 +60,8 @@ public class PickUpSystem : MonoBehaviour
 
     void Pickup(GameObject item)
     {  
-        Debug.Log("Picked up: " + item.name);
+        ItemManager.Instance.CheckItem(itemID);
+        //Debug.Log("Picked up: " + item.name);
         Destroy(item);
     }
 
