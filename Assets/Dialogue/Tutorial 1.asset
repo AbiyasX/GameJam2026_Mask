@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a11ea4359bb2fe4daf565d6bc53ca10, type: 3}
+  m_Name: Tutorial 1
+  m_EditorClassIdentifier: Assembly-CSharp::DialogTextData
+  lines:
+  - characterName: Panacea
+    text: Okay, before I go, do I remember how to move?
+  - characterName: Panacea
+    text: "Oh, that\u2019s right! I use WASD to move!"
+  - characterName: Panacea
+    text: "Oh, there\u2019s a toy wheel right there! I remember Remy asking for toys\u2026  "
+  - characterName: Panacea
+    text: I can press E to pick it up!
