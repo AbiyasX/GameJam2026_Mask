@@ -9,14 +9,17 @@ public class PickUpSystem : MonoBehaviour
     public LayerMask pickupLayer;
 
     [Header("References")]
+    public GameObject player;
     public Transform playerTransform;
-    [SerializeField] ItemManager itemManager;
 
     private InputSystem_Actions inputActions;
     private GameObject detectedItem = null;
 
     private void Awake()
     {
+        player = GameObject.FindWithTag("Player");
+        playerTransform = player.transform;
+
         inputActions = new InputSystem_Actions();
     }
 

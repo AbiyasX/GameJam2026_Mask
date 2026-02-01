@@ -26,6 +26,7 @@ public class Days
 public class Items
 {
     public int itemID;
+    public Transform itemPrefab;
     public bool isMainObjective;
     public bool isCollected;
 }
