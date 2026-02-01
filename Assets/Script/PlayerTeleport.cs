@@ -17,7 +17,6 @@ public class PlayerTeleport : MonoBehaviour
             PlayerCam.Priority.Value = PlayerValue;
             if (otherCam == null) return;
             otherCam.Priority.Value = otherValue;
-        }
-        
+        }   
     }
 }
